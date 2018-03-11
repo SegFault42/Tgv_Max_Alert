@@ -1,25 +1,32 @@
-### TGV MAX API
+# TGV MAX ALERT
 
-Liste des toutes les data : https://ressources.data.sncf.com/explore/dataset/tgvmax/table/?sort=date
+### Usage :
+```
+	$> git clone https://github.com/SegFault42/Tgv_Max_Alert
+	$> cd Tgv_Max_Alert
+	$> cp secret_template.json secret.json
+```
+Éditer le fichier secret Json avec vos informations. 
 
-Example pour un trajet de belfort (gare tgv) à Paris le 15/03/2018:
+Si vous souhaitez être notifie par email remplir les champs email avec un compte mail dans "my email".
 
-https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tgvmax&sort=date&facet=date&facet=origine&facet=destination&refine.origine=PARIS+(intramuros)&refine.destination=BELFORT+MONTBELIARD+TGV&refine.date=2018-03-15
+Si vous souhaitez être notifie par SMS, remplir les champs SMS (fonctionne uniquement avec free mobile).  
 
-Nous avons un json avec toutes les infos.
+[Configuration de la notification par SMS](https://www.freenews.fr/freenews-edition-nationale-299/free-mobile-170/nouvelle-option-notifications-par-sms-chez-free-mobile-14817)
 
-Le champ "od_happy_card" sert à savoir si des billets sont disponible ou pas.
+```
+	-h, --help            		show this help message and exit
+	--date DATE					date format : YYYY-MM-DD
+    --hour HOUR					hour format : 11:18. Monitor between 11h00 to 18h00
+    --origine ORIGINE			train station origine
+    --destination DESTINATION	train station destination
+    --alert ALERT         		SMS/EMAIL/NO
 
+```
 
-	$> python main.py -h
-	Usage : python main.py -date -hour -origine -destination
+Exemple pour un trajet entre Paris et Marseille :
 
-	-d --date : 12/03/2018
-	-h --hour : 11-18
-	-o --origine : BELFORT MONTBELIARD TGV
-	-D --destination : PARIS (intramuros)
+	python main.py --date="2018-03-26" --hour="6:20" --origine="PARIS (intramuros)" --destination="MARSEILLE ST CHARLES" --alert="EMAIL"
 
-le format de l'heure indique une tranche pendant laquel on souhaite vérifier la disponibilité des billets. Dans l'exemple au dessus sa signifie qu'on veut un billet entre 11h00 et 18h00
-
-La liste pour le formattage du nom de la gare se trouve ici : https://ressources.data.sncf.com/explore/dataset/tgvmax/table/?sort=date&dataChart=eyJxdWVyaWVzIjpbeyJjb25maWciOnsiZGF0YXNldCI6InRndm1heCIsIm9wdGlvbnMiOnsic29ydCI6ImRhdGUifX0sImNoYXJ0cyI6W3sidHlwZSI6ImxpbmUiLCJmdW5jIjoiQ09VTlQiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjNjZjMmE1In1dLCJ4QXhpcyI6ImRhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJ5ZWFyIiwic29ydCI6IiJ9XX0%3D
+[Lien avec tous les noms des différentes gares](https://ressources.data.sncf.com/explore/dataset/tgvmax/?sort=date)
 

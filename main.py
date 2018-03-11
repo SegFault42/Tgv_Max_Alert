@@ -13,7 +13,7 @@ def parse_arguments():
     parser.add_argument('--hour', type=str, required=True, help="hour format : 11:18. Monitor between 11h00 to 18h00")
     parser.add_argument('--origine', type=str, required=True, help="train station origine")
     parser.add_argument('--destination', type=str, required=True, help="train station destination")
-    parser.add_argument('--alert', type=str, required=True, help="SMS/EMAIL")
+    parser.add_argument('--alert', type=str, required=True, help="SMS/EMAIL/NO")
     parser.parse_args()
     args = parser.parse_args()
     return args
@@ -24,8 +24,7 @@ def is_args_valid(args):
     except ValueError:
         raise ValueError("\033[31mIncorrect data format, should be YYYY-MM-DD\033[0m")
 
-    print str(args.alert)
-    if (args.alert != "SMS" and args.alert != "EMAIL"):
+    if (args.alert != "SMS" and args.alert != "EMAIL" and args.alert != "NO"):
         print ("\033[31mAlert bad formatted\033[0m")
         sys.exit(-1);
 
@@ -76,7 +75,7 @@ def send_alert(data, args):
     "\nDepart a : " + data["fields"]["heure_depart"] +\
     "\nRetour : " + data["fields"]["destination"] +\
     "\nArrive a : " + data["fields"]["heure_arrivee"]
-    print "\033[32m" + message + "\033[0m"
+    print "\033[32m" + message + "\033[0m\n"
     if (args.alert == "SMS"):
         send_sms(message)
     elif (args.alert == "EMAIL"):
@@ -84,7 +83,7 @@ def send_alert(data, args):
 
 def search_train(data, my_hour, args):
     alert = False
-    nb_train = int(data["nhits"])
+    nb_train = len(data["records"])
     for i in range(0, nb_train):
         if (data["records"][i]["fields"]["od_happy_card"] == "OUI"):
             hour = data["records"][i]["fields"]["heure_depart"]
@@ -103,8 +102,6 @@ def main():
     while (True):
         response = urllib.urlopen(url)
         data = json.loads(response.read())
-        #data = json.load(open("./ressources.data.sncf.com.json")) #debug for local test
-        #print json.dumps(data["records"], indent=4)
         if search_train(data, hour, args) == True:
             return (1)
         else:
