@@ -31,3 +31,15 @@ python main.py --date="2018-03-26" --hour="6:20" --origine="PARIS (intramuros)" 
 ```
 
 [Lien avec tous les noms des différentes gares](https://ressources.data.sncf.com/explore/dataset/tgvmax/?sort=date)
+
+### Docker build
+```
+docker build -t tgvmax .
+```
+
+### Docker run
+```
+docker run -it \
+  -v $(pwd):/folder \
+  tgvmax "@"
+```
