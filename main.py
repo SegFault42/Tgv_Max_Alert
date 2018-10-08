@@ -43,7 +43,7 @@ def prepare_url(args):
     return url
 
 def send_sms(message):
-    credential = json.load(open("/folder/secret.json"))
+    credential = json.load(open("./secret.json"))
     print json.dumps(credential, indent=4)
     sms = "https://smsapi.free-mobile.fr/sendmsg?user="
     sms += credential["SMS"]["user"]
@@ -54,7 +54,7 @@ def send_sms(message):
     urllib.urlopen(sms)
 
 def send_email(message):
-    credential = json.load(open("/folder/secret.json"))
+    credential = json.load(open("./secret.json"))
     fromaddr = credential["EMAIL"]["my_email"]
     toaddrs = credential["EMAIL"]["toaddrs"]
     subject = "TGV MAX ALERT"
