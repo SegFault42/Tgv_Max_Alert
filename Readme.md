@@ -3,10 +3,12 @@
 ### Usage :
 ```
 $> git clone https://github.com/SegFault42/Tgv_Max_Alert
+$> apt-get install python3-pip
+$> pip3 install request
 $> cd Tgv_Max_Alert
 $> cp secret_template.json secret.json
 ```
-Éditer le fichier secret Json avec vos informations. 
+Éditer le fichier secret Json avec vos informations.
 
 Si vous souhaitez être notifie par email remplir les champs email avec un compte mail dans "my email".
 
@@ -21,7 +23,7 @@ Si vous souhaitez être notifie par SMS, remplir les champs SMS (fonctionne uniq
 --origine ORIGINE		train station origine
 --destination DESTINATION	train station destination
 --alert ALERT         		SMS/EMAIL/NO
-
+--api                     getViaApi
 ```
 
 Exemple pour un trajet entre Paris et Marseille :

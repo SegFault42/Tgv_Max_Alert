@@ -6,6 +6,7 @@ import argparse
 import datetime
 import sys
 import time
+import requests
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="TGV_Max_Alert")
@@ -14,6 +15,7 @@ def parse_arguments():
     parser.add_argument('--origine', type=str, required=True, help="train station origine")
     parser.add_argument('--destination', type=str, required=True, help="train station destination")
     parser.add_argument('--alert', type=str, required=True, help="SMS/EMAIL/NO")
+    parser.add_argument('--api', action="store_true", default=False)
     parser.parse_args()
     args = parser.parse_args()
     return args
@@ -89,7 +91,21 @@ def send_alert(data, args):
     elif (args.alert == "EMAIL"):
         send_email(message)
 
+def getResearch():
+
+    r = requests.get(
+    'http://tgv.baptisteheraud.com/api/alert',
+    params={},
+    headers={'x-key': 'DemocracyIsFragil'},
+    )
+    json_response = r.json()
+    print (json_response)
+    return (json_response)
+
 def search_train(data, my_hour, args):
+
+    if args.api:
+        getResearch()
     alert = False
     nb_train = len(data["records"])
     for i in range(0, nb_train):
