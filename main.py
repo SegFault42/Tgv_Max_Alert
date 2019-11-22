@@ -25,7 +25,7 @@ def is_args_valid(args):
         raise ValueError("\033[31mIncorrect data format, should be YYYY-MM-DD\033[0m")
 
     if (args.alert != "SMS" and args.alert != "EMAIL" and args.alert != "NO"):
-        print ("\033[31mAlert bad formatted\033[0m")
+        print >> sys.stderr, "\033[31mAlert bad formatted.\033[0m"
         sys.exit(-1);
 
     hour = args.hour.split(':', 1)
@@ -57,7 +57,7 @@ def send_email(message):
     try:
         jsonFile = open("./secret.json")
     except IOError:
-        print ("\033[31mCould not open file!\033[0m")
+        print >> sys.stderr, "\033[31mCould not open file!\033[0m"
         sys.exit(-1)
     jsonFile = open("./secret.json")
     credential = json.load(jsonFile)
@@ -73,6 +73,7 @@ def send_email(message):
     server.login(credential["EMAIL"]["my_email"], credential["EMAIL"]["my_password"])
     server.sendmail(fromaddr, toaddrs, msg)
     server.quit()
+    jsonFile.close()
 
 
 def send_alert(data, args):
