@@ -94,26 +94,11 @@ def search_train(data, my_hour, args):
     nb_train = len(data["records"])
     for i in range(0, nb_train):
         if (data["records"][i]["fields"]["od_happy_card"] == "OUI"):
-            #print ("")
-
-
-
-            #print (data["records"][i])
+    
             hour = data["records"][i]["fields"]["heure_depart"]
             hourIn = int(hour.split(':', 1)[0])
             minuteIn = int(hour.split(':')[1])
 
-            #print("--")
-            #print (minuteIn)
-            #print ("heure de depart du train = %s" %hour)
-            #print ("heure avant les : %s" % hourIn)
-            #print (my_hour)
-            #print ("on compare %s <= %s" % (int(my_hour[0]) ,hourIn ))
-
-
-            #print("--")
-
-            #if (int(my_hour[0]) <= hourIn and int(my_hour[1]) >= hourIn):
             if (int(my_hour[0]) <= hourIn):
                 if (int(my_hour[0]) == hourIn):
                     if int(my_hour[1]) <= minuteIn:
