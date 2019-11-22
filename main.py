@@ -94,7 +94,7 @@ def search_train(data, my_hour, args):
     nb_train = len(data["records"])
     for i in range(0, nb_train):
         if (data["records"][i]["fields"]["od_happy_card"] == "OUI"):
-    
+
             hour = data["records"][i]["fields"]["heure_depart"]
             hourIn = int(hour.split(':', 1)[0])
             minuteIn = int(hour.split(':')[1])
