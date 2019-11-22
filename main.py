@@ -54,7 +54,13 @@ def send_sms(message):
     urllib.urlopen(sms)
 
 def send_email(message):
-    credential = json.load(open("./secret.json"))
+    try:
+        jsonFile = open("./secret.json")
+    except IOError:
+        print ("\033[31mCould not open file!\033[0m")
+        sys.exit(-1)
+    jsonFile = open("./secret.json")
+    credential = json.load(jsonFile)
     fromaddr = credential["EMAIL"]["my_email"]
     toaddrs = credential["EMAIL"]["toaddrs"]
     subject = "TGV MAX ALERT"
@@ -76,6 +82,7 @@ def send_alert(data, args):
     "\nRetour : " + data["fields"]["destination"] +\
     "\nArrive a : " + data["fields"]["heure_arrivee"]
     print "\033[32m" + message + "\033[0m\n"
+
     if (args.alert == "SMS"):
         send_sms(message)
     elif (args.alert == "EMAIL"):
@@ -86,11 +93,34 @@ def search_train(data, my_hour, args):
     nb_train = len(data["records"])
     for i in range(0, nb_train):
         if (data["records"][i]["fields"]["od_happy_card"] == "OUI"):
+            #print ("")
+
+
+
+            #print (data["records"][i])
             hour = data["records"][i]["fields"]["heure_depart"]
             hourIn = int(hour.split(':', 1)[0])
-            if (int(my_hour[0]) <= hourIn and int(my_hour[1]) >= hourIn):
-                send_alert(data["records"][i], args)
-                alert = True
+            minuteIn = int(hour.split(':')[1])
+
+            #print("--")
+            #print (minuteIn)
+            #print ("heure de depart du train = %s" %hour)
+            #print ("heure avant les : %s" % hourIn)
+            #print (my_hour)
+            #print ("on compare %s <= %s" % (int(my_hour[0]) ,hourIn ))
+
+
+            #print("--")
+
+            #if (int(my_hour[0]) <= hourIn and int(my_hour[1]) >= hourIn):
+            if (int(my_hour[0]) <= hourIn):
+                if (int(my_hour[0]) == hourIn):
+                    if int(my_hour[1]) <= minuteIn:
+                        send_alert(data["records"][i], args)
+                        alert = True
+                else:
+                    send_alert(data["records"][i], args)
+                    alert = True
     if (alert == True):
         return True
     return False
@@ -110,4 +140,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
