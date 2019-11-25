@@ -127,20 +127,24 @@ def getResearch():
     except requests.exceptions.HTTPError as e:
         print ("ERROR")
         sys.exit(0)
+    except requests.exceptions.ConnectionError:
+        print ("Connection refused")
 
 
 def prepare_alldatas(data):
+
     row = []
-    for i in range(0, len(data)):
-        format = '%Y-%m-%dT%H:%M:%S%z'
-        d = dateutil.parser.parse(data[i]['goat'])   # python 2.7
-        date = str(d.year) + "-" + str(d.month) + "-" + str(d.day)
-        url = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tgvmax&sort=date&facet=date&facet=origine&facet=destination"
-        url += "&refine.origine=" + data[i]['departure']
-        url += "&refine.destination=" + data[i]['arrival']
-        url += "&refine.date=" + date
-        value = [url, data[i]['user']['email'] , d, data[i]['id']]
-        row.append(value)
+    if data is not None:
+        for i in range(0, len(data)):
+            format = '%Y-%m-%dT%H:%M:%S%z'
+            d = dateutil.parser.parse(data[i]['goat'])   # python 2.7
+            date = str(d.year) + "-" + str(d.month) + "-" + str(d.day)
+            url = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=tgvmax&sort=date&facet=date&facet=origine&facet=destination"
+            url += "&refine.origine=" + data[i]['departure']
+            url += "&refine.destination=" + data[i]['arrival']
+            url += "&refine.date=" + date
+            value = [url, data[i]['user']['email'] , d, data[i]['id']]
+            row.append(value)
     return (row)
 
 
@@ -205,8 +209,6 @@ def main():
 
 
     if args.api:
-        #dataApi = getResearch()
-        #alldataApi = prepare_alldatas(dataApi)
         while (True):
             search_trainAPI(args)
             time.sleep(15)
